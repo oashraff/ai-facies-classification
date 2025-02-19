@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Try Model - AI Facies Classification{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <main class="model-container">
+        <h1 class="page-title">Analyze Seismic Data</h1>
+        
+        <div class="model-selection">
+            <h2 class="section-title">Select Model Architecture</h2>
+            <div class="model-grid">
+                <div class="model-card" data-model="resnet34">
+                    <div class="model-content">
+                        <h3>ResNet-34</h3>
+                        <p>Balanced performance with moderate complexity</p>
+                        <ul class="model-features">
+                            <li>34 layers deep</li>
+                            <li>Efficient processing</li>
+                            <li>Balanced accuracy</li>
+                        </ul>
+                        <button class="btn btn-primary model-select-btn">Select</button>
+                    </div>
+                </div>
+                <div class="model-card" data-model="resnet50">
+                    <div class="model-content">
+                        <h3>ResNet-50</h3>
+                        <p>Deep architecture with higher complexity</p>
+                        <ul class="model-features">
+                            <li>50 layers deep</li>
+                            <li>Enhanced accuracy</li>
+                            <li>Complex pattern recognition</li>
+                        </ul>
+                        <button class="btn btn-primary model-select-btn">Select</button>
+                    </div>
+                </div>
+                <div class="model-card" data-model="inceptionv3">
+                    <div class="model-content">
+                        <h3>Inception-V3</h3>
+                        <p>Advanced architecture with multi-scale processing</p>
+                        <ul class="model-features">
+                            <li>Multi-scale analysis</li>
+                            <li>Efficient computation</li>
+                            <li>Advanced feature extraction</li>
+                        </ul>
+                        <button class="btn btn-primary model-select-btn">Select</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="upload-section hidden">
+            <h2 class="section-title">Upload Seismic Image</h2>
+            <form id="uploadForm" class="upload-form">
+                <div class="file-upload">
+                    <label for="seismicData" class="file-label">
+                        <span class="file-icon">📁</span>
+                        <span class="file-text">Choose a file or drag it here</span>
+                    </label>
+                    <input type="file" id="seismicData" accept="image/*" required>
+                </div>
+                <button type="submit" class="btn btn-primary submit-btn">Analyze</button>
+            </form>
+        </div>
+        
+        <div id="results" class="results-section hidden">
+            <div class="visualization-container"></div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/model-interface.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>window.jsPDF = window.jspdf.jsPDF;</script>
+{% endblock %} 

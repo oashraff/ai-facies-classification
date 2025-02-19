@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block title %}Technical Documentation - AI Seismic Facies Classification{% endblock %}
+
+{% block content %}
+<div class="documentation-container">
+    <nav class="doc-nav">
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#architectures">Model Architectures</a></li>
+            <li><a href="#implementation">Implementation Details</a></li>
+            <li><a href="#training">Training Process</a></li>
+            <li><a href="#performance">Performance Metrics</a></li>
+        </ul>
+    </nav>
+
+    <div class="doc-content">
+        <section id="overview" class="doc-section">
+            <h1>Technical Documentation</h1>
+            <p class="doc-intro">This documentation provides a comprehensive overview of our AI-powered seismic facies classification system, including detailed information about the architectures, implementation, and performance metrics.</p>
+            
+            <div class="info-box">
+                <h4>Key Features</h4>
+                <ul>
+                    <li>Multi-model architecture support</li>
+                    <li>Real-time seismic image analysis</li>
+                    <li>High-accuracy facies classification</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="architectures" class="doc-section">
+            <h2>Model Architectures</h2>
+            <p class="section-intro">Our system implements three state-of-the-art deep learning architectures, each optimized for seismic facies classification:</p>
+            
+            <div class="architecture-card">
+                <h3>ResNet-34</h3>
+                <div class="arch-details">
+                    <div class="arch-description">
+                        <p>A 34-layer deep residual network that excels in efficient feature extraction through skip connections and identity mappings. This architecture is particularly effective for real-time seismic analysis.</p>
+                    </div>
+                    <div class="arch-specs">
+                        <h4>Architecture Details</h4>
+                        <ul>
+                            <li><strong>Depth:</strong> 34 convolutional layers</li>
+                            <li><strong>Input Size:</strong> 224×224 pixels</li>
+                            <li><strong>Learning Rate:</strong> 0.0001</li>
+                            <li><strong>Batch Size:</strong> 64</li>
+                            <li><strong>Optimizer:</strong> Adam</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="architecture-card">
+                <h3>ResNet-50</h3>
+                <div class="arch-details">
+                    <div class="arch-description">
+                        <p>A deeper architecture utilizing bottleneck blocks for enhanced feature representation. Particularly effective for complex seismic patterns and challenging geological structures.</p>
+                    </div>
+                    <div class="arch-specs">
+                        <h4>Architecture Details</h4>
+                        <ul>
+                            <li><strong>Depth:</strong> 50 convolutional layers</li>
+                            <li><strong>Parameters:</strong> 25.6M</li>
+                            <li><strong>Input Size:</strong> 224×224 pixels</li>
+                            <li><strong>Learning Rate:</strong> 0.0001</li>
+                            <li><strong>Weight Decay:</strong> 1e-5</li>
+                            <li><strong>Batch Size:</strong> 64</li>
+                            <li><strong>Optimizer:</strong> Adam</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="architecture-card">
+                <h3>InceptionV3</h3>
+                <div class="arch-details">
+                    <div class="arch-description">
+                        <p>Advanced architecture with multi-scale processing capabilities through parallel convolution paths. Specialized in capturing features at various scales, crucial for seismic interpretation.</p>
+                    </div>
+                    <div class="arch-specs">
+                        <h4>Architecture Details</h4>
+                        <ul>
+                            <li><strong>Depth:</strong> 48 layers</li>
+                            <li><strong>Parameters:</strong> 23.8M</li>
+                            <li><strong>Input Size:</strong> 299×299 pixels</li>
+                            <li><strong>Learning Rate:</strong> 64</li>
+                            <li><strong>Batch Size:</strong> 0.0001</li>
+                            <li><strong>Optimizer:</strong> Adam</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="implementation" class="doc-section">
+            <h2>Implementation Details</h2>
+            <div class="implementation-details">
+                <div class="detail-card">
+                    <h3>Data Processing Pipeline</h3>
+                    <div class="pipeline-steps">
+                        <div class="step">
+                            <h4>1. Input Processing</h4>
+                            <ul>
+                                <li>Data Loading</li>
+                                <li>Patch Extraction</li>
+                                <li>Resolution adjustment per model</li>
+                            </ul>
+                        </div>
+                        <div class="step">
+                            <h4>2. Augmentation</h4>
+                            <ul>
+                                <li>Random horizontal/vertical flips</li>
+                                <li>Random rotation</li>
+                                <li>Image noise</li>
+                            </ul>
+                        </div>
+                        <div class="step">
+                            <h4>3. Optimization</h4>
+                            <ul>
+                                <li>Utilization of the Adam optimizer for efficient gradient descent</li>
+                                <li>Pre-defined set of class weights </li>
+                                <li>Implementation of cross-entropy loss function with selective weight decay</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="training" class="doc-section">
+            <h2>Training Process</h2>
+            <div class="training-details">
+                <h3 style="margin-bottom: 1rem;">Hyperparameters</h3>
+
+                <div class="param-table">
+                    <h4>ResNet-34</h4>
+                    <table>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Values Explored</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>Batch Size</td>
+                            <td>16, 32, 64, 128</td>
+                            <td>Number of training examples utilized in one iteration.</td>
+                        </tr>
+                        <tr>
+                            <td>Learning Rate</td>
+                            <td>0.01, 0.001, 0.0001, 1e-4</td>
+                            <td>Controls how much to change the model in response to the estimated error.</td>
+                        </tr>
+                        <tr>
+                            <td>Search Strategy</td>
+                            <td>Grid</td>
+                            <td>Exhaustive search method for hyperparameter tuning, evaluating all possible combinations.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="param-table">
+                    <h4>ResNet-50</h4>
+                    <table>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Values Explored</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>Batch Size</td>
+                            <td>16, 32, 64</td>
+                            <td>Number of training examples utilized in one iteration.</td>
+                        </tr>
+                        <tr>
+                            <td>Learning Rate</td>
+                            <td>0.01, 0.001, 0.0001, 1e-4</td>
+                            <td>Controls how much to change the model in response to the estimated error.</td>
+                        </tr>
+                        <tr>
+                            <td>Search Strategy</td>
+                            <td>Random</td>
+                            <td>Random search method for hyperparameter tuning, evaluating a random subset of combinations.</td>
+                        </tr>
+                        <tr>
+                            <td>Dropout</td>
+                            <td>0.1, 0.2, 0.3, 0.4, 0.5</td>
+                            <td>Technique to randomly drop neurons during training to prevent overfitting.</td>
+                        </tr>
+                        <tr>
+                            <td>Weight Decay</td>
+                            <td>1e-5</td>
+                            <td>Regularization technique to prevent overfitting.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="param-table">
+                    <h4>InceptionV3</h4>
+                    <table>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Values Explored</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>Batch Size</td>
+                            <td>16, 32, 64</td>
+                            <td>Number of training examples utilized in one iteration.</td>
+                        </tr>
+                        <tr>
+                            <td>Learning Rate</td>
+                            <td>0.01, 0.001, 0.0001, 1e-4</td>
+                            <td>Controls how much to change the model in response to the estimated error.</td>
+                        </tr>
+                        <tr>
+                            <td>Search Strategy</td>
+                            <td>Random</td>
+                            <td>Random search method for hyperparameter tuning, evaluating a random subset of combinations.</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="performance" class="doc-section">
+            <h2>Performance Metrics</h2>
+            <div class="metrics-container">
+                <div class="metric-card">
+                    <h3>Model Accuracies</h3>
+                    <div class="metric-table">
+                        <table>
+                            <tr>
+                                <th>Model</th>
+                                <th>Average Accuracy (%)</th>
+                            </tr>
+                            <tr>
+                                <td>ResNet-34</td>
+                                <td style="text-align: center;">93.5</td>
+                            </tr>
+                            <tr>
+                                <td>ResNet-50</td>
+                                <td style="text-align: center;">96.7</td>
+                            </tr>
+                            <tr>
+                                <td>InceptionV3</td>
+                                <td style="text-align: center;">97.2</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Home - AI Facies Classification{% endblock %}
+
+{% block content %}
+<main class="hero">
+    <h1>AI-Powered Facies Classification</h1>
+    <p class="subtitle">Advanced seismic image analysis using machine learning</p>
+    <div class="cta-buttons">
+        <a href="{{ url_for('model') }}" class="btn btn-primary">Try the Model</a>
+        <a href="{{ url_for('documentation') }}" class="btn btn-secondary">Learn More</a>
+    </div>
+</main>
+
+<section class="team-section">
+    <h2 class="section-title">Meet the Team</h2>
+    <div class="team-container">
+        <div class="team-card">
+            <div class="team-image">
+                <img src="{{ url_for('static', filename='images/omar.PNG') }}" alt="Omar Ashraf">
+            </div>
+            <div class="team-info">
+                <h3>Omar Ashraf</h3>
+                <p class="team-role">Computer Science Student & Aspiring AI Engineer</p>
+                <div class="team-divider"></div>
+                <p class="team-bio">AI enthusiast specializing in deep learning and computer vision.</p>
+                <div class="team-social">
+                    <a href="https://github.com/oashraff" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://linkedin.com/in/omarashrafmo" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="team-card">
+            <div class="team-image">
+                <img src="{{ url_for('static', filename='images/mazen.jpeg') }}" alt="Mazen Sakr">
+            </div>
+            <div class="team-info">
+                <h3>Mazen Sakr</h3>
+                <p class="team-role">Computer Science Student & ML Engineer</p>
+                <div class="team-divider"></div>
+                <p class="team-bio">Expert in machine learning algorithms and data analysis.</p>
+                <div class="team-social">
+                    <a href="https://github.com/mazen-github" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://linkedin.com/in/mazen-sakr12" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 
