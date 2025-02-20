@@ -2,14 +2,15 @@
 FROM python:3.9-slim AS builder
 WORKDIR /app
 
-# Install OS-level dependencies (including distutils and git-lfs)
+# Install OS-level dependencies, including python3-distutils and git-lfs
 RUN apt-get update && apt-get install -y python3-distutils git-lfs && rm -rf /var/lib/apt/lists/*
 RUN git lfs install
 
-# Copy the entire repository including the .git folder
+# Copy the entire repository (including .git) into the container
+# Make sure your .dockerignore does not exclude the .git folder
 COPY . .
 
-# Fetch the actual Git LFS files and remove the .git folder to save space
+# Pull the actual Git LFS files (the real .pth files) and then remove the .git folder to save space
 RUN git lfs pull && rm -rf .git
 
 # Install Python dependencies
@@ -21,11 +22,10 @@ WORKDIR /app
 
 # Install runtime OS-level dependencies
 RUN apt-get update && apt-get install -y python3-distutils && rm -rf /var/lib/apt/lists/*
-
-# Copy only the built application code from the builder stage
+# Copy only the built application from the builder stage
 COPY --from=builder /app /app
 
 EXPOSE 3000
 
-# Command to run the FastAPI application
+# Command to run the FastAPI application using gunicorn with UvicornWorker
 CMD ["gunicorn", "main:app", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:3000"]
