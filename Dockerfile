@@ -4,20 +4,20 @@ FROM python:3.9-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# Install OS-level dependencies (including distutils)
-RUN apt-get update && apt-get install -y python3-distutils && rm -rf /var/lib/apt/lists/*
+# Install OS-level dependencies (including distutils and git-lfs)
+RUN apt-get update && apt-get install -y python3-distutils git-lfs && rm -rf /var/lib/apt/lists/*
 
-# Copy the requirements file into the container
-COPY requirements.txt .
+# Initialize Git LFS
+RUN git lfs install
+
+# Copy the entire repository (including the .git directory) into the container
+COPY . .
+
+# Fetch the actual Git LFS files (i.e. the real model weights) and then remove .git
+RUN git lfs pull && rm -rf .git
 
 # Install the required Python packages
 RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the rest of the application code into the container
-COPY . .
-
-# Copy the models directory into the container
-COPY models/ ./models/
 
 # Expose the port the app runs on
 EXPOSE 3000
