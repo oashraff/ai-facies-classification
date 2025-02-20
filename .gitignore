@@ -1,0 +1,4 @@
+.dockerignore
+Dockerfile
+main.py
+venv/
