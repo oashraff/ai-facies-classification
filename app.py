@@ -17,22 +17,19 @@ def load_models():
     # Load ResNet34
     resnet34_model = UNet34()
     resnet34_model.load_state_dict(torch.load('models/resnet34.pth', 
-                                             map_location=torch.device('cpu'), 
-                                             weights_only=True))
+                                             map_location=torch.device('cpu')))
     resnet34_model.eval()
 
     # Load ResNet50
     resnet50_model = UNet50(in_channels=1, out_channels=6)
     resnet50_model.load_state_dict(torch.load('models/resnet50.pth', 
-                                             map_location=torch.device('cpu'), 
-                                             weights_only=True))
+                                             map_location=torch.device('cpu')))
     resnet50_model.eval()
     
     # Load InceptionV3
     inception_model = UNetInception(in_channels=1, out_channels=6)
     inception_model.load_state_dict(torch.load('models/inceptionv3.pth',
-                                           map_location=torch.device('cpu'),
-                                           weights_only=True))
+                                           map_location=torch.device('cpu')))
     inception_model.eval()
     
     return resnet34_model, resnet50_model, inception_model
