@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from datetime import datetime
+import threading
 import torch
 import torch.nn.functional as F
 from torchvision import transforms
@@ -12,29 +13,44 @@ from inception_model import UNetInception
 
 app = Flask(__name__)
 
+# Global variables to hold the models and a flag to indicate if they're loaded
+RESNET34_MODEL = None
+RESNET50_MODEL = None
+INCEPTION_MODEL = None
+models_loaded = False
+
 def load_models():
-    
-    # Load ResNet34
-    resnet34_model = UNet34()
-    resnet34_model.load_state_dict(torch.load('models/resnet34.pth', 
-                                             map_location=torch.device('cpu')))
-    resnet34_model.eval()
+    global RESNET34_MODEL, RESNET50_MODEL, INCEPTION_MODEL, models_loaded
+    try:
+        # Load ResNet34
+        resnet34_model = UNet34()
+        resnet34_model.load_state_dict(torch.load('models/resnet34.pth', map_location=torch.device('cpu')))
+        resnet34_model.eval()
 
-    # Load ResNet50
-    resnet50_model = UNet50(in_channels=1, out_channels=6)
-    resnet50_model.load_state_dict(torch.load('models/resnet50.pth', 
-                                             map_location=torch.device('cpu')))
-    resnet50_model.eval()
-    
-    # Load InceptionV3
-    inception_model = UNetInception(in_channels=1, out_channels=6)
-    inception_model.load_state_dict(torch.load('models/inceptionv3.pth',
-                                           map_location=torch.device('cpu')))
-    inception_model.eval()
-    
-    return resnet34_model, resnet50_model, inception_model
+        # Load ResNet50
+        resnet50_model = UNet50(in_channels=1, out_channels=6)
+        resnet50_model.load_state_dict(torch.load('models/resnet50.pth', map_location=torch.device('cpu')))
+        resnet50_model.eval()
 
-RESNET34_MODEL, RESNET50_MODEL, INCEPTION_MODEL = load_models()
+        # Load InceptionV3
+        inception_model = UNetInception(in_channels=1, out_channels=6)
+        inception_model.load_state_dict(torch.load('models/inceptionv3.pth', map_location=torch.device('cpu')))
+        inception_model.eval()
+
+        RESNET34_MODEL = resnet34_model
+        RESNET50_MODEL = resnet50_model
+        INCEPTION_MODEL = inception_model
+        models_loaded = True
+        print("Models loaded successfully.")
+    except Exception as e:
+        print(f"Error loading models: {e}")
+        models_loaded = False
+
+@app.before_first_request
+def initialize_models():
+    # Start a background thread to load models so that the app starts quickly
+    thread = threading.Thread(target=load_models)
+    thread.start()
 
 # Define image transformations
 transform = transforms.Compose([
@@ -46,9 +62,12 @@ transform = transforms.Compose([
 
 @app.route('/api/predict', methods=['POST'])
 def predict():
+    if not models_loaded:
+        return jsonify({'error': 'Models are still loading. Please try again later.'}), 503
+
     if 'image' not in request.files:
         return jsonify({'error': 'No image uploaded'}), 400
-    
+
     model_name = request.form.get('model', 'resnet50')
     
     try:
@@ -67,16 +86,16 @@ def predict():
         
         with torch.no_grad():
             outputs = model(img_tensor)
-            predicted = outputs.argmax(1)
+            predicted = outputs.argmax(dim=1)
             probabilities = F.softmax(outputs, dim=1)
-            confidence = torch.mean(torch.max(probabilities, dim=1)[0]).item()
+            confidence = torch.max(probabilities, dim=1)[0].mean().item()
         
         prediction_map = predicted[0].cpu().numpy()
         classes = ['Upper North Sea', 'Middle North Sea', 'Lower North Sea', 
-                  'Rijnland/Chalk', 'Scruff', 'Zechstein']
+                   'Rijnland/Chalk', 'Scruff', 'Zechstein']
         
         unique, counts = np.unique(prediction_map, return_counts=True)
-        class_percentages = dict(zip([classes[i] for i in unique], 
+        class_percentages = dict(zip([classes[i] for i in unique],
                                (counts / counts.sum() * 100).tolist()))
         
         return jsonify({
