@@ -110,6 +110,7 @@ def predict():
 
 @app.route('/health')
 def health():
+    # Lightweight endpoint to verify the app is up
     return jsonify({"status": "ok"}), 200
 
 @app.route('/')
