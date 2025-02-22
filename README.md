@@ -10,7 +10,7 @@ For more technical details or to share insights, contact me at oomaraashrafaabdo
 
 Visit the app [here](https://ai-facies-classification-production.up.railway.app/)
 ## Contributors
-This project wouldn't have been possible without the hard work and dedication of me and my amazing colleague, Mazen Sakr. I want to take a moment to express my heartfelt gratitude to him.
+This project was completed in collaboration, [Mazen Sakr](@MazenSake09) --> mazensakr396@gmail.com
 
 ## Overview
 
