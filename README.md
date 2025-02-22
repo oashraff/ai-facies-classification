@@ -2,6 +2,8 @@
 
 This repository contains the source code for an AI-powered facies classification web application. The app leverages deep learning models (ResNet34, ResNet50, and InceptionV3 - as backbones) to analyze input images and classify geological facies such as Upper North Sea, Middle North Sea, Lower North Sea, Rijnland/Chalk, Scruff, and Zechstein (using the [Dutch F3 Dataset](https://github.com/yalaudah/facies_classification_benchmark/tree/main)). The application uses Flask for the web interface and FastAPI to provide a RESTful API.
 
+[Please take a look at a high-level presentation regarding this project.](https://github.com/oashraff/ai-facies-classification/blob/main/pdfs/facies-classification.pdf)
+
 For anyone interested in learning more about the machine learning methodologies, training processes, and model development techniques behind this project, please feel free to reach out for further discussion.
 
 For more technical details or to share insights, contact me at oomaraashrafaabdou@gmail.com.
