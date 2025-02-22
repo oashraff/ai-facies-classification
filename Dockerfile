@@ -6,11 +6,14 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y python3-distutils git-lfs && rm -rf /var/lib/apt/lists/*
 RUN git lfs install
 
-# Copy source code
-COPY . .
+# Clone the repository so that .git is present
+RUN git clone https://github.com/oashraff/ai-facies-classification.git .
 
-# If a .git folder exists, pull Git LFS files and remove .git
-RUN if [ -d ".git" ]; then git lfs pull && rm -rf .git; else echo "No .git directory, skipping Git LFS pull"; fi
+# Pull the Git LFS files
+RUN git lfs pull
+
+# Optionally remove the .git folder if it's not needed later
+RUN rm -rf .git
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
@@ -22,9 +25,8 @@ WORKDIR /app
 # Install runtime OS-level dependencies
 RUN apt-get update && apt-get install -y python3-distutils && rm -rf /var/lib/apt/lists/*
 
-# Copy installed packages from builder (assuming they went into /usr/local)
+# Copy installed packages and application code from builder
 COPY --from=builder /usr/local /usr/local
-# Copy your application code
 COPY --from=builder /app /app
 
 EXPOSE 3000
