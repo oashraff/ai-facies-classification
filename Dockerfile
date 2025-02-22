@@ -28,4 +28,5 @@ COPY --from=builder /app /app
 EXPOSE 3000
 
 # Command to run the FastAPI application using gunicorn with UvicornWorker
-CMD ["gunicorn", "main:app", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:3000"]
+CMD ["gunicorn", "main:app", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:3000", "--timeout", "300"]
+

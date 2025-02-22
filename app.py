@@ -108,6 +108,10 @@ def predict():
         print(f"Error: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+@app.route('/health')
+def health():
+    return jsonify({"status": "ok"}), 200
+
 @app.route('/')
 def home():
     return render_template('index.html', year=datetime.now().year)
